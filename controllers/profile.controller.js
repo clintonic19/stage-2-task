@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { v7: uuidv7 } = require("uuid");
 const Profile = require("../models/profile.model");
 const { buildQuery } = require("../services/QueryBuilder.services");
 const { parseQuery } = require("../services/LanguageParser.services");
@@ -127,6 +126,8 @@ exports.searchProfiles = async (req, res, next) => {
 
 exports.createProfile = async (req, res, next) => {
   try {
+    const { v7: uuidv7 } = require("uuid");
+
     const rawName = req.body?.name;
 
     if (rawName === undefined || rawName === null || String(rawName).trim() === "") {
