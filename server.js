@@ -6,8 +6,12 @@ const connectDB = require("./database/db");
 
 const app = express();
 
+connectDB();
+
 app.use(cors({ origin: "*" }));
 app.use(express.json());
+
+app.use("/api", getProfileRoute);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({
@@ -18,17 +22,6 @@ app.get("/api/health", (req, res) => {
     }
   });
 });
-
-app.use("/api/profiles", async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.use("/api", getProfileRoute);
 
 app.use((req, res) => {
   res.status(404).json({
