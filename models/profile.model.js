@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-const { validate: validateUuid, version: uuidVersion } = require("uuid");
+const { isUuidV7 } = require("../utils/uuid.util");
 
 const UUID_V7_MESSAGE = "id must be a valid UUID v7";
 const AGE_GROUPS = ["child", "teenager", "adult", "senior"];
 const GENDERS = ["male", "female"];
-
-const isUuidV7 = (value) => validateUuid(value) && uuidVersion(value) === 7;
 
 const profileSchema = new mongoose.Schema(
   {

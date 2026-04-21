@@ -6,6 +6,7 @@ const { getPagination } = require("../utils/Pagination.utils");
 const { getSortOptions } = require("../utils/Sorting");
 const { getAgeGroup } = require("../utils/age.util");
 const { getCountryNameByCode } = require("../utils/country.util");
+const { createUuidV7 } = require("../utils/uuid.util");
 const {
   getGender,
   getAge,
@@ -126,8 +127,6 @@ exports.searchProfiles = async (req, res, next) => {
 
 exports.createProfile = async (req, res, next) => {
   try {
-    const { v7: uuidv7 } = require("uuid");
-
     const rawName = req.body?.name;
 
     if (rawName === undefined || rawName === null || String(rawName).trim() === "") {
@@ -163,7 +162,7 @@ exports.createProfile = async (req, res, next) => {
       typeof topCountry?.country_id === "string" ? topCountry.country_id.toUpperCase() : null;
 
     const profile = await Profile.create({
-      id: uuidv7(),
+      id: createUuidV7(),
       name,
       gender: typeof gender?.gender === "string" ? gender.gender.toLowerCase() : null,
       gender_probability:

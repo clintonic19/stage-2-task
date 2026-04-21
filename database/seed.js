@@ -2,11 +2,11 @@ require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const { v7: uuidv7, validate: validateUuid, version: uuidVersion } = require("uuid");
 const connectDB = require("./db");
 const Profile = require("../models/profile.model");
 const { getAgeGroup } = require("../utils/age.util");
 const { getCountryNameByCode } = require("../utils/country.util");
+const { createUuidV7, isUuidV7 } = require("../utils/uuid.util");
 
 const DEFAULT_SEED_FILE = path.join(__dirname, "seeds", "seed_profiles.json");
 
@@ -27,8 +27,6 @@ const normalizeString = (value) => {
   const normalized = String(value).trim();
   return normalized.length > 0 ? normalized : null;
 };
-
-const isUuidV7 = (value) => validateUuid(value) && uuidVersion(value) === 7;
 
 const parseCsvLine = (line) => {
   const values = [];
@@ -117,7 +115,7 @@ const toProfiles = (records) =>
       const age = toNumberOrNull(record.age);
       const countryId = normalizeString(record.country_id)?.toUpperCase() || null;
       const normalized = {
-        id: isUuidV7(record.id) ? record.id : uuidv7(),
+        id: isUuidV7(record.id) ? record.id : createUuidV7(),
         name: normalizeString(record.name),
         gender: normalizeString(record.gender)?.toLowerCase() || null,
         gender_probability: toNumberOrNull(record.gender_probability),
